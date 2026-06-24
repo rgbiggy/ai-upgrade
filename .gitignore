@@ -1,0 +1,12 @@
+# Vercel / deps
+.vercel
+node_modules
+
+# Local tooling
+.claude/
+
+# Heavy working assets (not needed for static deploy)
+3D/
+Examples/
+Source/
+*.mp4
