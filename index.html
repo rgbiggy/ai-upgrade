@@ -177,11 +177,12 @@ const EVENTS = [
   { date:'2026-06-19', type:'lesson',   title:'урок 2' },
   { date:'2026-06-25', type:'lesson',   title:'урок 3' },
   { date:'2026-06-26', type:'feedback', title:'фидбек 2', note:'продлён' },
-  { date:'2026-07-01', type:'feedback', title:'фидбек 3', online:true },
   { date:'2026-07-02', type:'lesson',   title:'урок 4' },
-  { date:'2026-07-08', type:'feedback', title:'фидбек 4', online:true },
+  { date:'2026-07-02', type:'feedback', title:'фидбек 3' },
+  { date:'2026-07-06', type:'feedback', title:'Q&A', online:true, note:'19:00' },
+  { date:'2026-07-08', type:'feedback', title:'фидбек 4', online:true, note:'19:00' },
   { date:'2026-07-09', type:'lesson',   title:'урок 5', note:'доп.' },
-  { date:'2026-07-15', type:'feedback', title:'фидбек', note:'резервный' },
+  { date:'2026-07-15', type:'feedback', title:'фидбек', note:'резервный', online:true },
   { date:'2026-07-15', type:'feedback', title:'финал', finish:true },
 ];
 // =============================================
@@ -284,7 +285,7 @@ for(let w=0;w<weeks;w++){
 }
 document.getElementById('agenda').innerHTML=ag;
 
-document.getElementById('foot').innerHTML=`<span class="m">●</span><span>фидбек 3 и 4 — онлайн · урок 5 (9 июля) — дополнительный · 15 июля — резервный фидбек и финал</span>`;
+document.getElementById('foot').innerHTML=`<span class="m">●</span><span>Q&A, фидбек 4 и резервный (15 июля) — онлайн · урок 5 (9 июля) — дополнительный · 15 июля — резервный фидбек и финал</span>`;
 </script>
 </body>
 </html>
