@@ -13,9 +13,13 @@
 
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  /* градиент на body: его бокс равен высоте документа, поэтому
+     лесенка растягивается на всю страницу, как на лендинге.
+     на html — конечный цвет градиента, чтобы область за боксом
+     (короткий документ, оверскролл) стыковалась без шва */
+  html{-webkit-text-size-adjust:100%;background:var(--c-paper)}
   body{
-    background:var(--c-paper);color:var(--c-ink);
+    background:var(--grad-page);min-height:100vh;color:var(--c-ink);
     font-family:var(--font);font-weight:var(--fw-medium);
     font-size:var(--fs-caption);line-height:var(--lh-caption);letter-spacing:var(--track-body);
     text-transform:lowercase;
@@ -25,38 +29,42 @@
   b,strong{font-weight:var(--fw-bold)}
   .wrap{max-width:1180px;margin:0 auto}
 
-  /* ---------- header ---------- */
+  /* ---------- header ----------
+     шапка лежит на тёмной части градиента — текст светлый */
   .eyebrow{font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-steel)}
   .head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-top:14px}
   .title{
-    font-weight:var(--fw-medium);
+    font-weight:var(--fw-bold);
     font-size:var(--fs-display-fluid);
     line-height:var(--lh-display);
     letter-spacing:var(--track-display);
+    color:var(--c-paper);
     max-width:14ch;
   }
   .title em{font-style:normal;color:var(--c-accent)}
-  .meta{text-align:right;font-size:var(--fs-caption);line-height:var(--lh-caption);color:var(--c-slate)}
-  .meta .range{color:var(--c-ink);font-weight:var(--fw-bold);display:block;margin-bottom:5px}
+  .meta{text-align:right;font-size:var(--fs-caption);line-height:var(--lh-caption);color:var(--c-mist)}
+  .meta .range{color:var(--c-paper);font-weight:var(--fw-bold);display:block;margin-bottom:5px}
 
   /* ---------- progress ---------- */
   .spine{margin:34px 0 30px}
   .spine-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:12px}
-  .spine-lab{font-size:var(--fs-caption);color:var(--c-slate)}
-  .spine-lab b{color:var(--c-ink)}
+  .spine-lab{font-size:var(--fs-caption);color:var(--c-mist)}
+  .spine-lab b{color:var(--c-paper)}
   .spine-pct{
     font-weight:var(--fw-medium);
     font-size:var(--fs-sub-fluid);
     line-height:var(--lh-display);
     letter-spacing:var(--track-display);
-    color:var(--c-accent);
+    /* не акцентом: на тёмной части градиента красный по чёрному
+       даёт 2.8:1, ниже порога. акцент остаётся в полосе и точке */
+    color:var(--c-paper);
   }
-  .track{height:4px;border-radius:var(--r-sm);background:var(--c-haze);overflow:hidden}
+  .track{height:4px;border-radius:var(--r-sm);background:rgba(255,255,255,.18);overflow:hidden}
   .track i{display:block;height:100%;border-radius:var(--r-sm);background:var(--c-accent);width:0;
     transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
-  .now{margin-top:14px;font-size:var(--fs-caption);color:var(--c-slate);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .now{margin-top:14px;font-size:var(--fs-caption);color:var(--c-mist);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .now .dot{width:7px;height:7px;border-radius:50%;background:var(--c-accent);flex:0 0 auto}
-  .now b{color:var(--c-ink)}
+  .now b{color:var(--c-paper)}
 
   /* ---------- calendar (desktop) ---------- */
   .cal{background:var(--c-white);border:var(--hair) solid var(--c-haze);border-radius:var(--r-md);overflow:hidden}
@@ -107,8 +115,11 @@
 
   .chip.done{opacity:.4}
 
-  /* ---------- feed (mobile) ---------- */
-  .feed{display:none}
+  /* ---------- feed (mobile) ----------
+     на подложке: иначе строки шли бы прямо по градиенту
+     и вверху ленты теряли контраст */
+  .feed{display:none;background:var(--c-white);border:var(--hair) solid var(--c-haze);
+    border-radius:var(--r-md);padding:14px}
   .row{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:9px 0;
     border-top:var(--hair) solid var(--c-haze);align-items:start}
   .row:first-child{border-top:0}
@@ -116,7 +127,7 @@
   .row.past .d{color:var(--c-mist)}
   .row.empty{padding:6px 0}
   .row.empty .d{font-size:var(--fs-nano);line-height:var(--lh-nano)}
-  .row.today{background:var(--c-white);border-radius:var(--r-md);border-top-color:transparent;
+  .row.today{background:var(--c-paper);border-radius:var(--r-md);border-top-color:transparent;
     padding:10px;margin:0 -10px}
   .row.today .d{color:var(--c-accent);font-weight:var(--fw-bold)}
   .row .stack{display:flex;flex-direction:column;gap:8px}
@@ -127,8 +138,9 @@
   .wk:first-child{border-top:0;padding-top:0}
 
   /* ---------- legend / foot ---------- */
+  /* легенда и подпись приходятся на светлый низ градиента */
   .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;
-    font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-slate)}
+    font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-deep)}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .legend i{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
   .legend .l-onboarding{background:var(--c-accent)}
@@ -136,9 +148,9 @@
   .legend .l-feedback{background:var(--c-haze)}
   .legend .l-guest{background:var(--c-slate)}
   .legend .l-qa{box-shadow:inset 0 0 0 var(--hair) var(--c-accent)}
-  .legend .l-reserve{box-shadow:inset 0 0 0 var(--hair) var(--c-mist)}
+  .legend .l-reserve{box-shadow:inset 0 0 0 var(--hair) var(--c-slate)}
 
-  .foot{margin-top:18px;font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-steel)}
+  .foot{margin-top:18px;font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-deep)}
 
   .jump{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;
     border:0;font-family:var(--font);font-weight:var(--fw-medium);font-size:var(--fs-caption);
@@ -209,13 +221,13 @@ const EVENTS = [
   {date:'2026-09-04', kind:'lesson',     k:'урок 1',     t:'key visual и обложки'},
   {date:'2026-09-09', kind:'feedback',   k:'фидбэк 1',   t:'19:00'},
   {date:'2026-09-10', kind:'lesson',     k:'урок 2',     t:'баннер, ресайзы, лендинг'},
-  {date:'2026-09-14', kind:'qa',         k:'q&a',        t:'19:00', online:true},
-  {date:'2026-09-15', kind:'guest',      k:'разбор',     t:'мария тепленко, cmo wannabe', online:true},
-  {date:'2026-09-16', kind:'feedback',   k:'фидбэк 2',   t:'19:00'},
+  {date:'2026-09-16', kind:'feedback',   k:'фидбэк 2',   t:'19:00', online:true},
   {date:'2026-09-17', kind:'lesson',     k:'урок 3',     t:'анимированные элементы бренда'},
+  {date:'2026-09-18', kind:'guest',      k:'разбор',     t:'мария тепленко, cmo wannabe', online:true},
+  {date:'2026-09-21', kind:'qa',         k:'q&a',        t:'19:00', online:true},
   {date:'2026-09-23', kind:'feedback',   k:'фидбэк 3',   t:'19:00'},
   {date:'2026-09-24', kind:'lesson',     k:'урок 4',     t:'продуктовый ролик'},
-  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 4',   t:'19:00'},
+  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 4',   t:'19:00', online:true},
   {date:'2026-10-01', kind:'lesson',     k:'урок 5',     t:'бонусный'},
   {date:'2026-10-07', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'},
   {date:'2026-10-14', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'}
