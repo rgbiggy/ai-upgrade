@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>post ai creative &amp; motion — расписание</title>
+<meta name="description" content="расписание и трекер прогресса шортса post ai creative &amp; motion, поток 2 сентября — 14 октября 2026">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--c-paper);color:var(--c-ink);
+    font-family:var(--font);font-weight:var(--fw-medium);
+    font-size:var(--fs-caption);line-height:var(--lh-caption);letter-spacing:var(--track-body);
+    text-transform:lowercase;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(20px,4vw,56px);
+  }
+  b,strong{font-weight:var(--fw-bold)}
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  .eyebrow{font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-steel)}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-top:14px}
+  .title{
+    font-weight:var(--fw-medium);
+    font-size:var(--fs-display-fluid);
+    line-height:var(--lh-display);
+    letter-spacing:var(--track-display);
+    max-width:14ch;
+  }
+  .title em{font-style:normal;color:var(--c-accent)}
+  .meta{text-align:right;font-size:var(--fs-caption);line-height:var(--lh-caption);color:var(--c-slate)}
+  .meta .range{color:var(--c-ink);font-weight:var(--fw-bold);display:block;margin-bottom:5px}
+
+  /* ---------- progress ---------- */
+  .spine{margin:34px 0 30px}
+  .spine-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+  .spine-lab{font-size:var(--fs-caption);color:var(--c-slate)}
+  .spine-lab b{color:var(--c-ink)}
+  .spine-pct{
+    font-weight:var(--fw-medium);
+    font-size:var(--fs-sub-fluid);
+    line-height:var(--lh-display);
+    letter-spacing:var(--track-display);
+    color:var(--c-accent);
+  }
+  .track{height:4px;border-radius:var(--r-sm);background:var(--c-haze);overflow:hidden}
+  .track i{display:block;height:100%;border-radius:var(--r-sm);background:var(--c-accent);width:0;
+    transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .now{margin-top:14px;font-size:var(--fs-caption);color:var(--c-slate);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .now .dot{width:7px;height:7px;border-radius:50%;background:var(--c-accent);flex:0 0 auto}
+  .now b{color:var(--c-ink)}
+
+  /* ---------- calendar (desktop) ---------- */
+  .cal{background:var(--c-white);border:var(--hair) solid var(--c-haze);border-radius:var(--r-md);overflow:hidden}
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);background:var(--c-white)}
+  .dow span{padding:13px 13px 11px;font-size:var(--fs-nano);line-height:var(--lh-nano);color:var(--c-steel)}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);border-top:var(--hair) solid var(--c-haze)}
+  .cell{min-height:124px;padding:11px 11px 13px;border-left:var(--hair) solid var(--c-haze);
+    display:flex;flex-direction:column;gap:7px;transition:background .16s ease}
+  .cell:first-child{border-left:0}
+  .cell.off{background:var(--c-paper)}
+  .cell.today,.cell.today:hover{background:var(--c-paper)}
+  .cell.past .num{color:var(--c-mist)}
+  .num{font-size:var(--fs-nano);line-height:var(--lh-nano);color:var(--c-steel);
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .cell.today .num{color:var(--c-accent);font-weight:var(--fw-bold)}
+  .cell.today .num::after{content:"сегодня";font-size:var(--fs-nano);font-weight:var(--fw-medium);
+    color:var(--c-accent);border:var(--hair) solid var(--c-accent);border-radius:var(--r-sm);padding:1px 5px 2px}
+  .mo{color:var(--c-mist)}
+
+  /* ---------- chips ---------- */
+  .chip{border-radius:var(--r-sm);padding:8px 9px 9px;display:flex;flex-direction:column;gap:5px}
+  .chip .k{font-size:var(--fs-micro);line-height:var(--lh-micro);font-weight:var(--fw-bold);letter-spacing:var(--track-body)}
+  .chip .t{font-size:var(--fs-nano);line-height:1.16;font-weight:var(--fw-regular)}
+  .chip .meta-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+  .chip .on{display:inline-flex;align-items:center;font-size:var(--fs-nano);line-height:1;
+    font-weight:var(--fw-medium);border-radius:var(--r-sm);padding:3px 5px 4px}
+
+  .chip.onboarding{background:var(--c-accent);color:var(--c-white)}
+  .chip.onboarding .t{color:rgba(255,255,255,.86)}
+  .chip.onboarding .on{background:rgba(255,255,255,.22);color:var(--c-white)}
+
+  .chip.lesson{background:var(--c-deep);color:var(--c-paper)}
+  .chip.lesson .t{color:var(--c-mist)}
+
+  .chip.feedback{background:var(--c-haze);color:var(--c-ink)}
+  .chip.feedback .t{color:var(--c-slate)}
+
+  .chip.guest{background:var(--c-slate);color:var(--c-paper)}
+  .chip.guest .t{color:var(--c-haze)}
+  .chip.guest .on{background:rgba(255,255,255,.22);color:var(--c-white)}
+
+  .chip.qa{color:var(--c-accent);box-shadow:inset 0 0 0 var(--hair) var(--c-accent)}
+  .chip.qa .t{color:var(--c-accent);opacity:.78}
+  .chip.qa .on{background:var(--c-accent);color:var(--c-white)}
+
+  .chip.reserve{color:var(--c-slate);box-shadow:inset 0 0 0 var(--hair) var(--c-mist)}
+  .chip.reserve .t{color:var(--c-steel)}
+
+  .chip.done{opacity:.4}
+
+  /* ---------- feed (mobile) ---------- */
+  .feed{display:none}
+  .row{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:9px 0;
+    border-top:var(--hair) solid var(--c-haze);align-items:start}
+  .row:first-child{border-top:0}
+  .row .d{font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-steel);padding-top:2px}
+  .row.past .d{color:var(--c-mist)}
+  .row.empty{padding:6px 0}
+  .row.empty .d{font-size:var(--fs-nano);line-height:var(--lh-nano)}
+  .row.today{background:var(--c-white);border-radius:var(--r-md);border-top-color:transparent;
+    padding:10px;margin:0 -10px}
+  .row.today .d{color:var(--c-accent);font-weight:var(--fw-bold)}
+  .row .stack{display:flex;flex-direction:column;gap:8px}
+  .row .today-pill{font-size:var(--fs-nano);line-height:1;color:var(--c-accent);
+    border:var(--hair) solid var(--c-accent);border-radius:var(--r-sm);padding:3px 6px 4px;align-self:flex-start}
+  .wk{font-size:var(--fs-nano);line-height:var(--lh-nano);color:var(--c-steel);
+    padding:22px 0 8px;border-top:var(--hair) solid var(--c-haze)}
+  .wk:first-child{border-top:0;padding-top:0}
+
+  /* ---------- legend / foot ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;
+    font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-slate)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend i{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
+  .legend .l-onboarding{background:var(--c-accent)}
+  .legend .l-lesson{background:var(--c-deep)}
+  .legend .l-feedback{background:var(--c-haze)}
+  .legend .l-guest{background:var(--c-slate)}
+  .legend .l-qa{box-shadow:inset 0 0 0 var(--hair) var(--c-accent)}
+  .legend .l-reserve{box-shadow:inset 0 0 0 var(--hair) var(--c-mist)}
+
+  .foot{margin-top:18px;font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-steel)}
+
+  .jump{display:none;position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;
+    border:0;font-family:var(--font);font-weight:var(--fw-medium);font-size:var(--fs-caption);
+    line-height:1;letter-spacing:var(--track-body);text-transform:lowercase;
+    color:var(--c-white);background:var(--c-accent);border-radius:var(--r-sm);
+    padding:13px 20px 14px;box-shadow:0 8px 20px -8px rgba(28,26,35,.5);cursor:pointer}
+  .jump:active{transform:translateX(-50%) scale(.97)}
+
+  @media (max-width:900px){
+    .cal{display:none}
+    .feed{display:block}
+    .jump{display:block}
+    body{padding-bottom:92px}
+    .head{gap:16px}
+    .meta{text-align:left}
+    .spine{margin:26px 0 24px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .track i{transition:none}
+    .cell{transition:none}
+  }
+  :focus-visible{outline:2px solid var(--c-accent);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">расписание · поток сентябрь 2026</div>
+  <div class="head">
+    <h1 class="title"><em>post ai</em> creative &amp; motion</h1>
+    <div class="meta">
+      <span class="range">2 сентября — 14 октября</span>
+      <span id="counts"></span>
+    </div>
+  </div>
+
+  <section class="spine">
+    <div class="spine-head">
+      <div class="spine-lab">пройдено <b id="done">0</b> из <b id="total">0</b> встреч</div>
+      <div class="spine-pct" id="pct">0%</div>
+    </div>
+    <div class="track"><i id="bar"></i></div>
+    <div class="now" id="now"></div>
+  </section>
+
+  <div class="cal" id="cal"></div>
+  <div class="feed" id="feed"></div>
+
+  <div class="legend">
+    <span><i class="l-onboarding"></i>онбординг</span>
+    <span><i class="l-lesson"></i>урок</span>
+    <span><i class="l-feedback"></i>фидбэк</span>
+    <span><i class="l-qa"></i>q&amp;a</span>
+    <span><i class="l-guest"></i>разбор гостя</span>
+    <span><i class="l-reserve"></i>резерв</span>
+  </div>
+
+  <div class="foot">время встреч указано по мск · уроки выходят в записи, без времени</div>
+  <button class="jump" id="jump" type="button">сегодня</button>
+</div>
+
+<script>
+const START = [2026,7,31];   // пн 31 августа 2026
+const WEEKS = 7;             // до вс 18 октября, покрывает резерв 14 октября
+
+const EVENTS = [
+  {date:'2026-09-02', kind:'onboarding', k:'онбординг',  t:'18:00', online:true},
+  {date:'2026-09-04', kind:'lesson',     k:'урок 1',     t:'key visual и обложки'},
+  {date:'2026-09-09', kind:'feedback',   k:'фидбэк 1',   t:'19:00'},
+  {date:'2026-09-10', kind:'lesson',     k:'урок 2',     t:'баннер, ресайзы, лендинг'},
+  {date:'2026-09-14', kind:'qa',         k:'q&a',        t:'19:00', online:true},
+  {date:'2026-09-15', kind:'guest',      k:'разбор',     t:'мария тепленко, cmo wannabe', online:true},
+  {date:'2026-09-16', kind:'feedback',   k:'фидбэк 2',   t:'19:00'},
+  {date:'2026-09-17', kind:'lesson',     k:'урок 3',     t:'анимированные элементы бренда'},
+  {date:'2026-09-23', kind:'feedback',   k:'фидбэк 3',   t:'19:00'},
+  {date:'2026-09-24', kind:'lesson',     k:'урок 4',     t:'продуктовый ролик'},
+  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 4',   t:'19:00'},
+  {date:'2026-10-01', kind:'lesson',     k:'урок 5',     t:'бонусный'},
+  {date:'2026-10-07', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'},
+  {date:'2026-10-14', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'}
+];
+
+const DOW = ['пн','вт','ср','чт','пт','сб','вс'];
+const MO  = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MOS = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+
+const key = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const byDay = {};
+EVENTS.forEach(e => (byDay[e.date] = byDay[e.date] || []).push(e));
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const todayKey = key(today);
+
+/* ---- счётчики в шапке ---- */
+const nLessons  = EVENTS.filter(e => e.kind === 'lesson').length;
+const nFeedback = EVENTS.filter(e => e.kind === 'feedback').length;
+const nOnline   = EVENTS.filter(e => e.online).length;
+const plural = (n, one, few, many) => {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+};
+document.getElementById('counts').textContent =
+  nLessons  + ' ' + plural(nLessons, 'урок','урока','уроков') + ' · ' +
+  nFeedback + ' ' + plural(nFeedback,'фидбэк','фидбэка','фидбэков') + ' · ' +
+  nOnline   + ' ' + plural(nOnline,'онлайн-встреча','онлайн-встречи','онлайн-встреч');
+
+/* ---- progress ---- */
+const done = EVENTS.filter(e => new Date(e.date+'T00:00:00') < today).length;
+const pct = Math.round(done / EVENTS.length * 100);
+document.getElementById('done').textContent = done;
+document.getElementById('total').textContent = EVENTS.length;
+document.getElementById('pct').textContent = pct + '%';
+requestAnimationFrame(() => document.getElementById('bar').style.width = pct + '%');
+
+const nowEl = document.getElementById('now');
+const todayEv = byDay[todayKey];
+const next = EVENTS.find(e => new Date(e.date+'T00:00:00') > today);
+if (todayEv) {
+  nowEl.innerHTML = '<span class="dot"></span><span>сегодня — <b>' + todayEv.map(e=>e.k).join(' и ') + '</b></span>';
+} else if (next) {
+  const d = new Date(next.date+'T00:00:00');
+  nowEl.innerHTML = '<span class="dot"></span><span>дальше — <b>' + next.k + '</b>, ' + d.getDate() + ' ' + MO[d.getMonth()] + '</span>';
+} else {
+  nowEl.innerHTML = '<span class="dot"></span><span><b>поток завершён</b></span>';
+}
+
+/* ---- chip ---- */
+function chip(e, isPast){
+  const cls = ['chip', e.kind];
+  if (isPast) cls.push('done');
+  const meta = (e.online ? '<span class="on">онлайн</span>' : '') + (e.t ? '<span class="t">'+e.t+'</span>' : '');
+  return '<span class="'+cls.join(' ')+'"><span class="k">'+e.k+'</span>'+
+         (meta ? '<span class="meta-row">'+meta+'</span>' : '')+'</span>';
+}
+
+/* ---- calendar ---- */
+const cal = document.getElementById('cal');
+let html = '<div class="dow">' + DOW.map(d=>'<span>'+d+'</span>').join('') + '</div>';
+const cur = new Date(START[0], START[1], START[2]);
+for (let w = 0; w < WEEKS; w++){
+  html += '<div class="week">';
+  for (let i = 0; i < 7; i++){
+    const k = key(cur);
+    const evs = byDay[k] || [];
+    const isPast = cur < today, isToday = k === todayKey;
+    const c = ['cell'];
+    if (isPast && !isToday) c.push('past');
+    if (isToday) c.push('today');
+    if (i > 4 && !evs.length) c.push('off');
+    const first = cur.getDate() === 1 || (w === 0 && i === 0);
+    html += '<div class="'+c.join(' ')+'"><div class="num"><span>'+cur.getDate()+
+            (first ? ' <span class="mo">'+MOS[cur.getMonth()]+'</span>' : '')+'</span></div>'+
+            evs.map(e=>chip(e, isPast && !isToday)).join('')+'</div>';
+    cur.setDate(cur.getDate()+1);
+  }
+  html += '</div>';
+}
+cal.innerHTML = html;
+
+/* ---- mobile feed ---- */
+const feed = document.getElementById('feed');
+let f = '';
+const cur2 = new Date(START[0], START[1], START[2]);
+for (let w = 0; w < WEEKS; w++){
+  f += '<div class="wk">'+(w < 5 ? 'неделя '+(w+1) : 'резерв')+'</div>';
+  for (let i = 0; i < 7; i++){
+    const k = key(cur2);
+    const evs = byDay[k] || [];
+    const isPast = cur2 < today, isToday = k === todayKey;
+    const c = ['row'];
+    if (!evs.length && !isToday) c.push('empty');
+    if (isPast && !isToday) c.push('past');
+    if (isToday) c.push('today');
+    f += '<div class="'+c.join(' ')+'"><div class="d">'+DOW[i]+' '+cur2.getDate()+' '+MOS[cur2.getMonth()]+'</div>'+
+         '<div class="stack">'+ (evs.length ? evs.map(e=>chip(e, isPast && !isToday)).join('') : '') +
+         (isToday && !evs.length ? '<span class="today-pill">сегодня</span>' : '') + '</div></div>';
+    cur2.setDate(cur2.getDate()+1);
+  }
+}
+feed.innerHTML = f;
+
+/* jump to today (mobile) */
+document.getElementById('jump').addEventListener('click', () => {
+  const t = feed.querySelector('.row.today');
+  if (!t) return;
+  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  t.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', block: 'center'});
+});
+</script>
+</body>
+</html>
