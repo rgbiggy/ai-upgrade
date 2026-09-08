@@ -182,7 +182,7 @@
   <div class="head">
     <h1 class="title"><em>post ai</em> creative &amp; motion</h1>
     <div class="meta">
-      <span class="range">2 сентября — 14 октября</span>
+      <span class="range">2 сентября — 21 октября</span>
       <span id="counts"></span>
     </div>
   </div>
@@ -214,24 +214,27 @@
 
 <script>
 const START = [2026,7,31];   // пн 31 августа 2026
-const WEEKS = 7;             // до вс 18 октября, покрывает резерв 14 октября
+const WEEKS = 8;             // до вс 25 октября, покрывает резерв 21 октября
 
 const EVENTS = [
+  // урок 1 вышел в двух частях, вторая — только 08.09.
+  // всё, что после, сдвинуто на неделю относительно исходного плана.
   {date:'2026-09-02', kind:'onboarding', k:'онбординг',  t:'18:00', online:true},
-  {date:'2026-09-04', kind:'lesson',     k:'урок 1',     t:'key visual и обложки'},
-  {date:'2026-09-09', kind:'feedback',   k:'фидбэк 1',   t:'19:00'},
-  {date:'2026-09-10', kind:'lesson',     k:'урок 2',     t:'баннер, ресайзы, лендинг'},
-  {date:'2026-09-16', kind:'feedback',   k:'фидбэк 2',   t:'19:00', online:true},
-  {date:'2026-09-17', kind:'lesson',     k:'урок 3',     t:'анимированные элементы бренда'},
-  {date:'2026-09-18', kind:'guest',      k:'разбор',     t:'мария тепленко, cmo wannabe', online:true},
-  {date:'2026-09-21', kind:'qa',         k:'q&a',        t:'19:00', online:true},
-  {date:'2026-09-23', kind:'feedback',   k:'фидбэк 3',   t:'19:00'},
-  {date:'2026-09-24', kind:'lesson',     k:'урок 4',     t:'продуктовый ролик'},
-  {date:'2026-09-28', kind:'guest',      k:'разбор',     t:'мария григорян, creative director showreal.pro & pinkman', online:true},
-  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 4',   t:'19:00', online:true},
-  {date:'2026-10-01', kind:'lesson',     k:'урок 5',     t:'бонусный'},
-  {date:'2026-10-07', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'},
-  {date:'2026-10-14', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'}
+  {date:'2026-09-04', kind:'lesson',     k:'урок 1',     t:'часть 1 · key visual и обложки'},
+  {date:'2026-09-08', kind:'lesson',     k:'урок 1',     t:'часть 2 · key visual и обложки'},
+  {date:'2026-09-16', kind:'feedback',   k:'фидбэк 1',   t:'19:00'},
+  {date:'2026-09-17', kind:'lesson',     k:'урок 2',     t:'баннер, ресайзы, лендинг'},
+  {date:'2026-09-23', kind:'feedback',   k:'фидбэк 2',   t:'19:00', online:true},
+  {date:'2026-09-24', kind:'lesson',     k:'урок 3',     t:'анимированные элементы бренда'},
+  {date:'2026-09-25', kind:'guest',      k:'разбор',     t:'мария тепленко, cmo wannabe', online:true},
+  {date:'2026-09-28', kind:'qa',         k:'q&a',        t:'19:00', online:true},
+  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 3',   t:'19:00'},
+  {date:'2026-10-01', kind:'lesson',     k:'урок 4',     t:'продуктовый ролик'},
+  {date:'2026-10-05', kind:'guest',      k:'разбор',     t:'мария григорян, creative director showreal.pro & pinkman', online:true},
+  {date:'2026-10-07', kind:'feedback',   k:'фидбэк 4',   t:'19:00', online:true},
+  {date:'2026-10-08', kind:'lesson',     k:'урок 5',     t:'бонусный'},
+  {date:'2026-10-14', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'},
+  {date:'2026-10-21', kind:'reserve',    k:'резерв',     t:'19:00 · долги, помощь, доделки'}
 ];
 
 const DOW = ['пн','вт','ср','чт','пт','сб','вс'];
@@ -247,7 +250,8 @@ const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const todayKey = key(today);
 
 /* ---- счётчики в шапке ---- */
-const nLessons  = EVENTS.filter(e => e.kind === 'lesson').length;
+// по именам: урок 1 вышел двумя частями, но урок всё равно один
+const nLessons  = new Set(EVENTS.filter(e => e.kind === 'lesson').map(e => e.k)).size;
 const nFeedback = EVENTS.filter(e => e.kind === 'feedback').length;
 const nOnline   = EVENTS.filter(e => e.online).length;
 const plural = (n, one, few, many) => {
@@ -319,7 +323,7 @@ const feed = document.getElementById('feed');
 let f = '';
 const cur2 = new Date(START[0], START[1], START[2]);
 for (let w = 0; w < WEEKS; w++){
-  f += '<div class="wk">'+(w < 5 ? 'неделя '+(w+1) : 'резерв')+'</div>';
+  f += '<div class="wk">'+(w < 6 ? 'неделя '+(w+1) : 'резерв')+'</div>';
   for (let i = 0; i < 7; i++){
     const k = key(cur2);
     const evs = byDay[k] || [];
