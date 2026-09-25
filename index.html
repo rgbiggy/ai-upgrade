@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ai upgrade — расписание</title>
-<meta name="description" content="расписание и трекер прогресса курса ai upgrade, поток 24 сентября — 20 октября 2026">
+<meta name="description" content="расписание и трекер прогресса курса ai upgrade, поток 24 сентября — 28 октября 2026">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +108,9 @@
   .chip.qa .t{color:var(--c-slate)}
   .chip.qa .on{background:var(--c-accent);color:var(--c-ink)}
 
+  .chip.reserve{color:var(--c-slate);box-shadow:inset 0 0 0 var(--hair) var(--c-mist)}
+  .chip.reserve .t{color:var(--c-steel)}
+
   .chip.done{opacity:.4}
 
   /* ---------- feed (mobile) ----------
@@ -142,6 +145,7 @@
   .legend .l-lesson{background:var(--c-deep)}
   .legend .l-feedback{background:var(--c-haze)}
   .legend .l-qa{box-shadow:inset 0 0 0 var(--hair) var(--c-accent)}
+  .legend .l-reserve{box-shadow:inset 0 0 0 var(--hair) var(--c-slate)}
 
   .foot{margin-top:18px;font-size:var(--fs-micro);line-height:var(--lh-micro);color:var(--c-deep)}
 
@@ -175,7 +179,7 @@
   <div class="head">
     <h1 class="title"><em>ai</em> upgrade</h1>
     <div class="meta">
-      <span class="range">24 сентября — 20 октября</span>
+      <span class="range">24 сентября — 28 октября</span>
       <span id="counts"></span>
     </div>
   </div>
@@ -197,6 +201,7 @@
     <span><i class="l-lesson"></i>урок</span>
     <span><i class="l-feedback"></i>фидбэк</span>
     <span><i class="l-qa"></i>q&amp;a</span>
+    <span><i class="l-reserve"></i>резерв</span>
   </div>
 
   <div class="foot">время встреч указано по мск · уроки выходят в записи, без времени</div>
@@ -205,17 +210,19 @@
 
 <script>
 const START = [2026,8,21];   // пн 21 сентября 2026
-const WEEKS = 5;             // до вс 25 октября, покрывает финал 20 октября
+const WEEKS = 6;             // до вс 1 ноября, покрывает резерв 28 октября
 // подписи недель в ленте: стартовая неделя 21–27 сен — нулевая
-const WK = ['неделя 0','неделя 1','неделя 2','неделя 3','неделя 4'];
+const WK = ['неделя 0','неделя 1','неделя 2','неделя 3','неделя 4','резерв'];
 
 const EVENTS = [
   {date:'2026-09-25', kind:'lesson',     k:'урок 1',            t:'старт · онбординг + урок 1'},
   {date:'2026-09-28', kind:'onboarding', k:'онбординг',         t:'19:00', online:true},
-  {date:'2026-10-07', kind:'feedback',   k:'фидбэк',            t:'19:00', online:true},
+  {date:'2026-09-30', kind:'feedback',   k:'фидбэк 1',          t:'офлайн · текстом'},
+  {date:'2026-10-07', kind:'feedback',   k:'фидбэк 2',          t:'19:00', online:true},
   {date:'2026-10-12', kind:'qa',         k:'q&a',               t:'19:00', online:true},
-  {date:'2026-10-14', kind:'feedback',   k:'фидбэк',            t:'офлайн · текстом'},
-  {date:'2026-10-20', kind:'feedback',   k:'финальный фидбэк',  t:'19:00 · завершение курса', online:true}
+  {date:'2026-10-14', kind:'feedback',   k:'фидбэк 3',          t:'офлайн · текстом'},
+  {date:'2026-10-21', kind:'feedback',   k:'фидбэк 4',          t:'19:00 · финальный, завершение курса', online:true},
+  {date:'2026-10-28', kind:'reserve',    k:'фидбэк 5',          t:'резервный'}
 ];
 
 const DOW = ['пн','вт','ср','чт','пт','сб','вс'];
@@ -232,7 +239,8 @@ const todayKey = key(today);
 
 /* ---- счётчики в шапке ---- */
 const nLessons  = new Set(EVENTS.filter(e => e.kind === 'lesson').map(e => e.k)).size;
-const nFeedback = EVENTS.filter(e => e.kind === 'feedback').length;
+// резервный фидбэк тоже фидбэк — считается пятым
+const nFeedback = EVENTS.filter(e => e.kind === 'feedback' || e.kind === 'reserve').length;
 const nOnline   = EVENTS.filter(e => e.online).length;
 const plural = (n, one, few, many) => {
   const m10 = n % 10, m100 = n % 100;
